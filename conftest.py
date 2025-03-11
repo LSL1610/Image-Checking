@@ -4,12 +4,21 @@ from typing import Dict
 import time
 import cv2
 import requests
-# from pages.bap import TMP_SCREENSHOT, PROFILE_PATH, USER_DATA_DIR, myOS
+import os as myOS
+from robot.libraries.OperatingSystem import OperatingSystem
+from pathlib import Path
+from loguru import logger
 
+CURDIR = Path(__file__).resolve().parent
+
+myOS = OperatingSystem()
 
 DEFAULT_CONFIDENCE: float = 0.8
 TIMEOUT_WAIT_IMG = 60
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+TMP_SCREENSHOT = f"{CURDIR}/tmp"
+PROFILE_PATH = f"{CURDIR}/profile"
+USER_DATA_DIR = "Profile_image"
 # ------------------------------------------------
 
 @pytest.fixture(scope="session")
@@ -23,10 +32,11 @@ def context(
     """
 
     context = browser_type.launch_persistent_context(
-        # f"{PROFILE_PATH}\\{USER_DATA_DIR}",
+        f"{PROFILE_PATH}\\{USER_DATA_DIR}",
         **{
             **browser_type_launch_args,
             **browser_context_args,
+            "slow_mo": 500,
             "headless": False,
             "ignore_https_errors": True,
             "user_agent": USER_AGENT,
@@ -51,9 +61,9 @@ def page(context):
 
 def find_image_opencv(page, template_path: str, brand: str):
     try:
-        # TMP = myOS.join_path(TMP_SCREENSHOT, f"{brand}_alive.png")
-        # page.screenshot(path=TMP)
-        # scr = cv2.imread(TMP)
+        TMP = myOS.join_path(TMP_SCREENSHOT, f"{brand}_alive.png")
+        page.screenshot(path=TMP)
+        scr = cv2.imread(TMP)
         template = cv2.imread(template_path)
     except Exception as e:
         print(f"Please check again the path of image at: {e}")
@@ -90,7 +100,7 @@ def wait_for_image():
         - brand: image capture in tmp
     """
 
-    def _wait(page, image_path, brand, timeout=TIMEOUT_WAIT_IMG):
+    def _wait(page, image_path, brand:str = "Default", timeout=TIMEOUT_WAIT_IMG):
         stop_time = time.perf_counter() + timeout
         location = None
         while time.perf_counter() < stop_time:
