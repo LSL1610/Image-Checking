@@ -32,7 +32,8 @@ def context(
     """
 
     context = browser_type.launch_persistent_context(
-        f"{PROFILE_PATH}\\{USER_DATA_DIR}",
+        # f"{PROFILE_PATH}\\{USER_DATA_DIR}",\
+            None, # None is not using pro5
         **{
             **browser_type_launch_args,
             **browser_context_args,

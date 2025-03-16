@@ -29,6 +29,7 @@ class Lib:
         stt_img = self.wait_for_image(self.page, self.get_image_path(image_name))
         if isinstance(stt_img, tuple):
             self.page.mouse.click(stt_img[0], stt_img[1])
+            time.sleep(1)
             return True
         else:
             raise Exception(f"Image {image_name} not found")
