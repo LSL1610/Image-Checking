@@ -36,11 +36,11 @@ class Test_demo:
                 logger.debug("Login success")
             else:
                 logger.error("Login failed")
-            sleep(100)
         except Exception as e:
             logger.error(e)
     
     def test2_add_product_to_cart(self):
+        self.page.reload()
         try:
             for i in range (1, 3):
                 self.lib.wait_image_and_click(f"product{i}")

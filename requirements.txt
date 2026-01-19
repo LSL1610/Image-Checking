@@ -1,0 +1,8 @@
+pytest
+loguru
+playwright
+opencv-python
+numpy
+pyautogui
+robotframework
+pytest-playwright

@@ -3,7 +3,6 @@ from playwright.sync_api import BrowserType
 from typing import Dict
 import time
 import cv2
-import requests
 import os as myOS
 from robot.libraries.OperatingSystem import OperatingSystem
 from pathlib import Path
@@ -14,7 +13,7 @@ CURDIR = Path(__file__).resolve().parent
 myOS = OperatingSystem()
 
 DEFAULT_CONFIDENCE: float = 0.8
-TIMEOUT_WAIT_IMG = 60
+TIMEOUT_WAIT_IMG = 15
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
 TMP_SCREENSHOT = f"{CURDIR}/tmp"
 PROFILE_PATH = f"{CURDIR}/profile"
@@ -43,10 +42,23 @@ def context(
             "user_agent": USER_AGENT,
             "no_viewport": True,
             "ignore_default_args": ["--enable-automation", "--no-sandbox"],
-            "args": ["--start-maximized", "--disable-notifications", "--mute-audio"],
-        },
+            "args": ["--start-maximized", "--disable-notifications", "--mute-audio", 
+                    "--disable-infobars","--disable-save-password-bubble",
+                    "--disable-features=TranslateUI","--disable-notifications",
+                    "--disable-features=PasswordManager,PasswordManagerOnboarding",
+                    "--disable-save-password-bubble", "--disable-credential-services",
+                    "--disable-infobars",
+                    "--disable-notifications",],
+            # ===== Block popup / permission =====
+            "permissions": [],
+            "accept_downloads": False,
+            # ===== Disable automation flags =====
+            "ignore_default_args": [
+                "--enable-automation",
+                "--no-sandbox"],
+        }
     )
-
+    
     yield context
     context.close()
 
