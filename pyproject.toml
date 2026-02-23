@@ -1,0 +1,16 @@
+[project]
+name = "image-checking"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "loguru>=0.7.3",
+    "numpy>=2.4.2",
+    "opencv-python>=4.13.0.92",
+    "playwright>=1.58.0",
+    "pyautogui>=0.9.54",
+    "pytest>=9.0.2",
+    "pytest-playwright>=0.7.2",
+    "robotframework>=7.4.1",
+]
